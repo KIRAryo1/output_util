@@ -1,10 +1,12 @@
 def headline_size(str)
-  matches = str.match(/\[\* (.+)\]/)
-  ret = matches ? "__" + matches[1] + "__" : str
-  p ret
-  return ret
+  matches = str.match(/\[\* (.+?)\]/)
+  return matches ? "__" + matches[1] + "__" : str
 end
 
+def inline_bold(str)
+  matches = str.match(/\[\[(.+?)\]\]/)
+  return matches ? "__" + matches[1] + "__" : str
+end
 
 filename = ARGV[0] || 'machine_learning.in'
 outfile = filename.split('.')[0] + '.out'
@@ -16,6 +18,7 @@ File.open(filename, "r") do |io|
   lines = txt.split("\n")
 
   lines = lines.map{|e| headline_size(e)}
+  lines = lines.map{|e| inline_bold(e)}
 
   txt = lines.join("\n")
 end
