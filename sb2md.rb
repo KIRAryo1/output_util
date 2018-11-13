@@ -16,6 +16,14 @@ def numerical_formula(str)
   str.gsub(/^\[\$ (.+?)\]$/, '$$ \1 $$').gsub(/\[\$ (.+?)\]/, '$ \1 $')
 end
 
+def embedded_gyazo(str)
+  str.gsub(/^\[https:\/\/gyazo(.+?)\]$/, '![Image from Gyazo](https://i.gyazo\1.png)')
+end
+
+def embedded_picture(str)
+  str.gsub(/^\[(.+?)\]$/, '![picture](\1)')
+end
+
 
 filename = ARGV[0] || 'machine_learning.in'
 outfile = filename.split('.')[0] + '.out'
@@ -30,6 +38,8 @@ File.open(filename, "r") do |io|
   lines = lines.map{|e| inline_bold(e)}
   lines = lines.map{|e| headline_size(e)}
   lines = lines.map{|e| numerical_formula(e)}
+  lines = lines.map{|e| embedded_gyazo(e)}
+  lines = lines.map{|e| embedded_picture(e)}
 
   # markdown new line needs 2 \n's.
   txt = lines.join("\n\n")
