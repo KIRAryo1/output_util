@@ -24,6 +24,10 @@ def embedded_picture(str)
   str.gsub(/^\[(.+?)\]$/, '![picture](\1)')
 end
 
+def footmark_for_numerical_formula(str)
+  str.gsub(/ _([^_])/, '_\1')
+end
+
 
 filename = ARGV[0] || 'machine_learning.in'
 outfile = filename.split('.')[0] + '.out'
@@ -40,6 +44,7 @@ File.open(filename, "r") do |io|
   lines = lines.map{|e| numerical_formula(e)}
   lines = lines.map{|e| embedded_gyazo(e)}
   lines = lines.map{|e| embedded_picture(e)}
+  lines = lines.map{|e| footmark_for_numerical_formula(e)}
 
   # markdown new line needs 2 \n's.
   txt = lines.join("\n\n")
